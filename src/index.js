@@ -2,6 +2,7 @@ import './index.css';
 import { initialCards } from "../components/cards.js";
 import { OpenModal, closePopup } from '../components/modal.js';
 import { likeCard } from '../components/card.js';
+import { createCard, deleteCard } from '../components/card.js';
 // @todo: Темплейт карточки
 export const cardTemplate = document.querySelector('#card-template').content;
 // @todo: DOM узлы
@@ -17,25 +18,7 @@ const profileDescription = document.querySelector('.profile__description');
 const nameInput = document.querySelector('.popup__input_type_name');
 const jobInput = document.querySelector('.popup__input_type_description');
 // @todo: Функция создания карточки
-function createCard(place, deleteCard){
-    const cardElement = cardTemplate.querySelector('.places__item').cloneNode(true);
-    const likeEl = cardElement.querySelector('.card__like-button');
-    const deleteButton = cardElement.querySelector('.card__delete-button');
-    const image = cardElement.querySelector('.card__image');
-    image.src = place.link;
-    image.alt = place.name;
-    cardElement.querySelector('.card__title').textContent = place.name;
-    
-    deleteButton.addEventListener('click', deleteCard);
-    likeEl.addEventListener('click', likeCard);
-    image.addEventListener('click', openModalImage);
 
-    return cardElement;
-}
-// @todo: Функция уда
-function deleteCard(item){
-    item.target.closest('.places__item').remove();
-}
 // @todo: Вывести карточки на страницу
 initialCards.forEach(function(item) {
     const itemCard = createCard(item, deleteCard, likeCard, openModalImage);
@@ -53,7 +36,7 @@ buttonEdit.addEventListener('click', () => {
 
     OpenModal(popupTypeEdit) });
 
-function openModalImage(evt) { 
+export function openModalImage(evt) { 
     OpenModal (popupTypeImage);
     const imagePopup = document.querySelector('.popup__image'); 
     const popupCaption = document.querySelector('.popup__caption'); 
@@ -120,5 +103,16 @@ function FormPlace(evt){
     clearForm(formNewPlace);
     closePopup(popupTypeNewCard);
 }
+
+const popupOpen = document.querySelectorAll('.popup_is-opened')
+function popupSmoothly(evt){
+    evt.style.transition = 'opacity 2.5s, linear';
+    evt.style.opacity = '0';
+}
+
+popupOpen.forEach(popup => {
+    popup.style.opacity = '0'; // начальное состояние
+    popupSmoothly(popup); 
+});
 
 formNewPlace.addEventListener('submit', FormPlace);
