@@ -41,7 +41,7 @@
     <div class="popup__content">
       <button type="button" class="popup__close"></button>
       <h3 class="popup__title">Редактировать профиль</h3>
-      <form class="popup__form" name="edit-profile">
+      <form class="popup__form" name="edit-profile" novalidate>
         <input type="text" 
                 name="name" 
                 class="popup__input popup__input_type_name" 
@@ -105,11 +105,15 @@
 <template id="card-template">
   <li class="places__item card">
     <img class="card__image" src="" alt="" />
-    <button type="button" class="card__delete-button"></button>
+    <button type="button" 
+    class="card__delete-button"
+    aria-label="Delete card"></button>
     <div class="card__description">
-      <h2 class="card__title">
-      </h2>
-      <button type="button" class="card__like-button"></button>
+      <h2 class="card__title"></h2>
+      <div class="card__like">
+        <button type="button" class="card__like-button" aria-label="Like card"></button>
+        <span class="card__like-counter">0</span>
+      </div>
     </div>
   </li>
 </template>

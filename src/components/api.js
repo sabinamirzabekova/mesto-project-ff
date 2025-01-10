@@ -1,103 +1,76 @@
 import baseAvatar from "../images/avatar.jpg";
 
 const config = {
-    baseUrl: "https://mesto.nomoreparties.co/v1/wff-cohort-25",
+    baseUrl: 'https://nomoreparties.co/v1/wff-cohort-29',
     headers: {
-        authorization: "316e4a9b-05bc-4b79-808c-b1e75a04d6f1",
+        authorization: 'f82711d0-1159-4aaa-9f6b-dc90f5c0b8e2',
         'Content-Type': 'application/json'
-        }
     }
+}
 
-export function getInitialCards() {
-    return fetch("https://mesto.nomoreparties.co/v1/wff-cohort-25/cards", {
-    headers: {
-        authorization: "316e4a9b-05bc-4b79-808c-b1e75a04d6f1",
-        'Content-Type': 'application/json'
-        }
-    })
-    .then((res) => getResponseData(res));
-    }
-
-export const getAboutUser = () =>{
-    return fetch("https://mesto.nomoreparties.co/v1/wff-cohort-25/users/me",{
-        headers: {
-            authorization: "316e4a9b-05bc-4b79-808c-b1e75a04d6f1",
-            'Content-Type': 'application/json'
-            }
+export function getInformationAbout(){
+    return fetch(`${config.baseUrl}/users/me`, {
+        headers: config.headers
     })
     .then((res) => getResponseData(res));
 }
 
+export function getCards(){
+    return fetch(`${config.baseUrl}/cards`, {
+        headers: config.headers
+    })
+    .then((res) => getResponseData(res));
+}
 
-export function patchProfile(name, description) {
-    return fetch('https://mesto.nomoreparties.co/v1/wff-cohort-25/users/me', {
-        headers: {
-            authorization: "316e4a9b-05bc-4b79-808c-b1e75a04d6f1",
-            'Content-Type': 'application/json'
-            },
+export function patchGetEditProfile(name, description){
+    return fetch(`${config.baseUrl}/users/me`, {
         method: "PATCH",
+        headers: config.headers,
         body: JSON.stringify({
-        name: name,
-        about: description,
-    }),
+            name: name,
+            about: description,
+        }),
     })
-    .then((res) => getResponseData(res));
+    .then((res)=> getResponseData(res));
 }
 
-export function postNewCard(name, link) {
-    return fetch("https://mesto.nomoreparties.co/v1/wff-cohort-25/cards", {
+export function postNewCard(name, link){
+    return fetch(`${config.baseUrl}/cards`, {
         method: "POST",
-        headers:{
-            authorization: '316e4a9b-05bc-4b79-808c-b1e75a04d6f1',
-            'Content-Type': 'application/json'
-        },
+        headers: config.headers,
         body: JSON.stringify({
-        name: name,
-        link: link,
-    }),
+            name: name,
+            link: link,
+        }),
     })
-    .then((res) => getResponseData(res));
+    .then((res) => getResponseData(res))
 }
 
-export function deleteCard(cardId) {
-    return fetch(`https://mesto.nomoreparties.co/v1/wff-cohort-25/cards/${cardId}`, {
-        headers: {
-            authorization: '316e4a9b-05bc-4b79-808c-b1e75a04d6f1',
-            'Content-Type': 'application/json'
-        },
+export function deleteCardAPI(cardID){
+    return fetch(`${config.baseUrl}/cards/${cardID}`,{
+        headers: config.headers,
         method: "DELETE",
     })
     .then((res) => getResponseData(res));
 }
 
-export function putLike(cardId) {
-    return fetch(`${config.baseURL}/cards/likes/${cardId}`, {
+export function putLike(cardID){
+    return fetch(`${config.baseUrl}/cards/likes/${cardID}`,{
         headers: config.headers,
         method: "PUT",
     })
-    .then((res) => getResponseData(res));
+    .then((res) => getResponseData(res))
 }
 
-export function deleteLike(cardId) {
-    return fetch(`${config.baseURL}/cards/likes/${cardId}`, {
+export function deleteLike(cardID){
+    return fetch(`${config.baseUrl}/cards/likes/${cardID}`,{
         headers: config.headers,
         method: "DELETE",
     })
-    .then((res) => getResponseData(res));
+    .then((res) => getResponseData(res))
 }
 
-export function patchAvatar(link) {
-    return fetch(`${config.baseURL}/users/me/avatar`, {
-        headers: config.headers,
-        method: "PATCH",
-        body: JSON.stringify({
-        avatar: link,
-        }),
-    })
-    .then((res) => getResponseData(res));
-}
-
-export function getResponseData(res) {
+function getResponseData(res) {
     if (!res.ok) {
         return Promise.reject(`Ошибка: ${res.status}`); 
     }
